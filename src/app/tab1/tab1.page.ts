@@ -63,7 +63,14 @@ export class Tab1Page {
     for (let day = 1; day <= daysInMonth; day++) {
       const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;   // Formát YYYY-MM-DD
       this.namedayService.getNamedayForDate(date).subscribe(
-        (data: any) => { this.rowNamedays.push({ date, name: data.name }); });                    // Uložení do pole (push) s datum, jméno: API odpověď
+        (data: any) => { this.rowNamedays.push({ date: this.formatedDate(date), name: data.name });   // Uložení do pole (push) CZ formát datum, jméno: API odpověď
+      });                    
     }
   }
+
+    // Převod datumu z formátu YYYY-MM-DD na DD.MM.YYYY
+    private formatedDate(date: string): string {
+      const [year, month, day] = date.split('-');
+      return `${day}.${month}.${year}`;
+    }
 }
