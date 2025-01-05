@@ -64,6 +64,14 @@ export class Tab1Page {
       const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;   // Formát YYYY-MM-DD
       this.namedayService.getNamedayForDate(date).subscribe(
         (data: any) => { this.rowNamedays.push({ date: this.formatedDate(date), name: data.name });   // Uložení do pole (push) CZ formát datum, jméno: API odpověď
+
+        // Seřazení svátků podle data
+        this.rowNamedays.sort((a, b) => {
+          const dateA = new Date(a.date.split('.').reverse().join('-')).getTime();
+          const dateB = new Date(b.date.split('.').reverse().join('-')).getTime();
+          return dateA - dateB;
+        });
+        
       });                    
     }
   }
