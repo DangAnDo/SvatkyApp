@@ -10,15 +10,32 @@
     <ion-label position="floating">Zadejte datum</ion-label>
     <ion-input [(ngModel)]="inputDate" placeholder="DD.MM."></ion-input>
   </ion-item>
-  <ion-button expand="full" (click)="searchByDate()">Vyhledat</ion-button>
+  <ion-button expand="full" (click)="searchByDate()">Vyhledat podle data</ion-button>
 
-  <!-- Výsledek -->
-  <ion-card *ngIf="result">
+  <!-- Výsledek podle datumu -->
+  <ion-card *ngIf="resultDate">
     <ion-card-header>
       <ion-card-title>Svátek má:</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      {{ result }}
+      {{ resultDate }}
     </ion-card-content>
   </ion-card>
-</ion-content>
+
+    <!-- Vyhledávání podle jména -->
+    <ion-item>
+      <ion-label position="floating">Zadejte jméno</ion-label>
+      <ion-input [(ngModel)]="inputName"></ion-input>
+    </ion-item>
+    <ion-button expand="full" (click)="searchByName()">Vyhledat podle jména</ion-button>
+  
+    <!-- Výsledek podle jména -->
+    <ion-card *ngIf="resultName">
+      <ion-card-header>
+        <ion-card-title>Svátek ve dne:</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ resultName }}
+      </ion-card-content>
+    </ion-card>
+  </ion-content>

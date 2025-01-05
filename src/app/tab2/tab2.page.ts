@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
+import { HttpClient } from '@angular/common/http'; // Načítání JSON databáze
+
+
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
@@ -14,31 +17,35 @@ import { IonicModule } from '@ionic/angular';
 })
 
 export class Tab2Page {
-  inputDate: string = ''; // Uživatelem zadané datum
-  result: string | null = null; // Výsledek vyhledávání
+  inputDate: string = '';           // Uživatelem zadané datum
+  inputName: string = '';           // Uživatelem zadané jméno
 
-  constructor(private svatkyapiService: SvatkyapiService) {}
+  resultDate: string | null = null; // Výsledek vyhledávání podle datumu
+  resultName: string | null = null; // Výsledek vyhledávání podle jména
+  namedays: any = {};               // JSON databáze jmen
+
+  constructor(private svatkyapiService: SvatkyapiService, private http: HttpClient) {}
 
   // Vyhledávání podle datumu
   searchByDate() {
     // Zkontroluj, zda uživatel zadal datum
     if (!this.inputDate) {
-      this.result = 'Zadejte prosím datum.';
+      this.resultDate = 'Zadejte prosím datum.';
       return;
     }
 
     // Naformátování datumu, pokud uživatel nezadá rok
     const formattedDate = this.formatDateWithYear(this.inputDate);
     if (!formattedDate) {
-      this.result = 'Nepodporovaný datum.';
+      this.resultDate = 'Nepodporovaný datum.';
       return;
     }
   
     // Zavolej službu pro získání svátku na zadané datum
     this.svatkyapiService.getNamedayForDate(formattedDate).subscribe({
-      next: (data: any) => { this.result = data.name ? data.name : 'Jméno nenalezeno pro zadané datum.'; },   // Vrátí jméno nebo chybovou hlášku
+      next: (data: any) => { this.resultDate = data.name ? data.name : 'Jméno nenalezeno pro zadané datum.'; },   // Vrátí jméno nebo chybovou hlášku
 
-      error: (err: any) => { this.result = 'Datum není podle formátu.'; },                                    // V případě chyby zobrazí chybovou hlášku
+      error: (err: any) => { this.resultDate = 'Datum není podle formátu.'; },                                    // V případě chyby zobrazí chybovou hlášku
     });
   }
 
@@ -68,5 +75,22 @@ export class Tab2Page {
     const isValid = parsedDate instanceof Date &&  !isNaN(parsedDate.getTime()) &&  parsedDate.toISOString().startsWith(date);
     return isValid;
   }
+
+  ngOnInit() {
+    // Načítání JSON databáze při inicializaci
+    this.http.get('assets/data/namedays.json').subscribe(
+      (data: any) => { this.namedays = data; });
+  }
+
+    // Vyhledávání podle jména
+    searchByName() {
+      if (!this.inputName) {
+        this.resultName = 'Zadejte prosím jméno.';
+        return;
+      }
+  
+      const dates = this.namedays[this.inputName];
+      this.resultName = dates ? `${dates.join(', ')}` : 'Datum nenalezeno pro zadané jméno.';
+    }
 }
   
