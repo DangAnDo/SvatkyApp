@@ -67,9 +67,7 @@ export class Tab1Page {
 
         // Seřazení svátků podle data
         this.rowNamedays.sort((a, b) => {
-          const dateA = new Date(a.date.split('.').reverse().join('-')).getTime();
-          const dateB = new Date(b.date.split('.').reverse().join('-')).getTime();
-          return dateA - dateB;
+          return this.parseDate(a.date) - this.parseDate(b.date);       // Vrátí a, pokud je výsledek záporný, jinak b
         });
         
       });                    
@@ -80,5 +78,11 @@ export class Tab1Page {
     private formatedDate(date: string): string {
       const [year, month, day] = date.split('-');
       return `${day}.${month}.${year}`;
+    }
+
+    // Převod datumu z formátu DD.MM.YYYY na timestamp pro řazení (timestamp udává počet milisekund od 1.1.1970)
+    private parseDate(date: string): number {
+      const [day, month, year] = date.split('.');
+      return new Date(`${year}-${month}-${day}`).getTime();
     }
 }
