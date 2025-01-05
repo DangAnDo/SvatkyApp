@@ -7,8 +7,8 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <!-- Input pole pro zadání datumu -->
   <ion-item>
-    <ion-label position="floating">Zadejte datum (YYYY-MM-DD):</ion-label>
-    <ion-input [(ngModel)]="inputDate"></ion-input>
+    <ion-label position="floating">Zadejte datum</ion-label>
+    <ion-input [(ngModel)]="inputDate" placeholder="DD.MM."></ion-input>
   </ion-item>
   <ion-button expand="full" (click)="searchByDate()">Vyhledat</ion-button>
 

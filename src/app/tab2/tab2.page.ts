@@ -26,13 +26,47 @@ export class Tab2Page {
       this.result = 'Zadejte prosím datum.';
       return;
     }
+
+    // Naformátování datumu, pokud uživatel nezadá rok
+    const formattedDate = this.formatDateWithYear(this.inputDate);
+    if (!formattedDate) {
+      this.result = 'Nepodporovaný datum.';
+      return;
+    }
   
     // Zavolej službu pro získání svátku na zadané datum
-    this.svatkyapiService.getNamedayForDate(this.inputDate).subscribe({
+    this.svatkyapiService.getNamedayForDate(formattedDate).subscribe({
       next: (data: any) => { this.result = data.name ? data.name : 'Jméno nenalezeno pro zadané datum.'; },   // Vrátí jméno nebo chybovou hlášku
 
       error: (err: any) => { this.result = 'Datum není podle formátu.'; },                                    // V případě chyby zobrazí chybovou hlášku
     });
+  }
+
+  private formatDateWithYear(input: string): string | null {
+    const fixedYear = 2024; // Pevně nastavíme přestupný rok 2024
+    let formattedDate = null;
+  
+    const ddMmRegex = /^\d{1,2}\.\d{1,2}\.$/;                   // Např. "29.6."
+    if (ddMmRegex.test(input)) {
+      const [day, month] = input.split('.');
+      const paddedDay = day.padStart(2, '0');                   // Přidá nulu, pokud je den jednociferný
+      const paddedMonth = month.padStart(2, '0');               // Přidá nulu, pokud je měsíc jednociferný
+      formattedDate = `${fixedYear}-${paddedMonth}-${paddedDay}`;
+    }
+  
+    // Ověří, zda je datum validní
+    if (formattedDate && this.isValidDate(formattedDate)) {
+      return formattedDate;
+    }
+    return null;
+  }
+
+  private isValidDate(date: string): boolean {
+    const parsedDate = new Date(date);
+
+    // Datum je platný objekt typu Date && Datum není "NaN" (neplatné datum) && Datum odpovídá přesně vstupnímu formátu YYYY-MM-DD.
+    const isValid = parsedDate instanceof Date &&  !isNaN(parsedDate.getTime()) &&  parsedDate.toISOString().startsWith(date);
+    return isValid;
   }
 }
   
