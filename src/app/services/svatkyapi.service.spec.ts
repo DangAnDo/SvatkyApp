@@ -16,3 +16,4 @@ describe('SvatkyapiService', () => {
 });
 
 // ionic generate service services/svatkyapi
+

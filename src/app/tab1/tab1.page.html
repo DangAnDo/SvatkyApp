@@ -1,4 +1,3 @@
-tab1.page.html:
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
@@ -8,7 +7,23 @@ tab1.page.html:
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-datetime presentation="date">
-    <span slot="title">Svátek má: </span>
-  </ion-datetime>
+  <!-- `presentation="date"` určuje zobrazení kalendáře jako výběr datumu -->
+  <!-- `(ionChange)` zachytí změnu datumu a spustí metodu `dateNameday` -->
+  <ion-datetime
+    presentation="date"
+    (ionChange)="dateNameday($event)"
+  ></ion-datetime>
+
+  <!-- *ngIf zajišťuje, že karta se zobrazí pouze, pokud existuje hodnota `nameday` -->
+  <ion-card *ngIf="nameday">
+    <ion-card-header>
+      <ion-card-title>Svátek má:</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+    <!-- Dynamicky zobrazené jméno svátku -->
+      {{ nameday }}
+    </ion-card-content>
+
+  </ion-card>
 </ion-content>

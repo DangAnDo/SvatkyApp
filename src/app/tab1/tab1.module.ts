@@ -13,8 +13,10 @@ import { Tab1PageRoutingModule } from './tab1-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    Tab1PageRoutingModule
+    Tab1PageRoutingModule,
+    Tab1Page
   ],
-  declarations: [Tab1Page]
+  // declarations: [Tab1Page]
+  // Component Tab1Page is standalone, and cannot be declared in an NgModule. Did you mean to import it instead?
 })
 export class Tab1PageModule {}
