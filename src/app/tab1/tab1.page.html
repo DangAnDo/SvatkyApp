@@ -1,18 +1,23 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Kalendář
-    </ion-title>
+    <ion-title>Kalendář</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleView()">
+        {{ showRowView ? 'Zobrazit kalendář' : 'Zobrazit řádkový seznam' }}
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- `presentation="date"` určuje zobrazení kalendáře jako výběr datumu -->
-  <!-- `(ionChange)` zachytí změnu datumu a spustí metodu `dateNameday` -->
-  <ion-datetime
-    presentation="date"
-    (ionChange)="dateNameday($event)"
-  ></ion-datetime>
+  <!-- Klasický kalendář -->
+  <div *ngIf="!showRowView">
+    <!-- `presentation="date"` určuje zobrazení kalendáře jako výběr datumu -->
+    <!-- `(ionChange)` zachytí změnu datumu a spustí metodu `dateNameday` -->
+    <ion-datetime
+      presentation="date"
+      (ionChange)="dateNameday($event)"
+    ></ion-datetime>
 
   <!-- *ngIf zajišťuje, že karta se zobrazí pouze, pokud existuje hodnota `nameday` -->
   <ion-card *ngIf="nameday">
@@ -24,6 +29,19 @@
     <!-- Dynamicky zobrazené jméno svátku -->
       {{ nameday }}
     </ion-card-content>
-
+    
   </ion-card>
+  </div>
+
+<!-- Řádkový kalendář -->
+  <div *ngIf="showRowView">
+    <ion-list>
+      <ion-item *ngFor="let day of rowNamedays">
+        <ion-label>
+          <h3>{{ day.date }}</h3>
+          <p>{{ day.name }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
