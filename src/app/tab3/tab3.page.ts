@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { IonicModule } from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
+import { FavoriteService } from '../services/favorite.service';
 
 @Component({
   selector: 'app-tab3',
@@ -15,19 +15,11 @@ import { Storage } from '@ionic/storage-angular';
 export class Tab3Page {
   favoriteNames: string[] = [];                  // Pole oblíbených jmen
 
-  constructor(private storage: Storage) {}
+  constructor(private favoriteService: FavoriteService) {}
 
-  async ngOnInit() {
-    await this.initStorage();
-    this.loadFavorites();
-  }
-
-  private async initStorage() {
-    await this.storage.create();
-  }
-
-  private async loadFavorites() {
-    const favorites = await this.storage.get('favorites');
-    this.favoriteNames = favorites || [];
+  ngOnInit() {
+    this.favoriteService.favoriteNames$.subscribe((favorites) => {
+      this.favoriteNames = favorites;
+    });
   }
 }

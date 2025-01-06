@@ -3,7 +3,7 @@ import { SvatkyapiService } from '../services/svatkyapi.service'; // Import slu�
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
-import { Storage } from '@ionic/storage-angular'; // Import Ionic Storage
+import { FavoriteService } from '../services/favorite.service'; // Import služby pro oblíbená jména
 
 
 @Component({
@@ -20,21 +20,19 @@ export class Tab1Page {
   currentYear: number = new Date().getFullYear();    // Aktuální rok
   favoriteNames: string[] = [];                      // Pole oblíbených jmen
 
-  constructor(private namedayService: SvatkyapiService, private storage: Storage) {}
+  constructor(private namedayService: SvatkyapiService, private favoriteService: FavoriteService ) {}
 
   // Asynchronní inicializace
   async ngOnInit() {
-    this.todayNameday();      // Načtení svátku pro dnešní den
-    await this.initStorage(); // Inicializace perzistentní paměti (Ionic Storage)
-    this.loadFavorites();     // Načtení oblíbených jmen z paměti
+    this.todayNameday();                                                // Načtení svátku pro dnešní den
+    await this.favoriteService.initStorage();                           // Inicializace perzistentní paměti (Ionic Storage)
+    this.favoriteNames = this.favoriteService.getFavoriteNames();       // Načtení oblíbených jmen z paměti
   }
 
   // Načtění dnešních svátků
   todayNameday() {
     this.namedayService.getTodayNameday().subscribe(
-      (data: any) => {
-        this.nameday = data.name;
-      }
+      (data: any) => { this.nameday = data.name; }
     );
   }
 
@@ -44,9 +42,7 @@ export class Tab1Page {
     const formattedDate = selectedDate.toISOString().split('T')[0]; // Formát YYYY-MM-DD
 
     this.namedayService.getNamedayForDate(formattedDate).subscribe(
-      (data: any) => {
-        this.nameday = data.name;
-      }
+      (data: any) => { this.nameday = data.name; }
     );
   }
 
@@ -89,30 +85,10 @@ export class Tab1Page {
     return new Date(`${year}-${month}-${day}`).getTime();
   }
 
-  // Inicializace Ionic Storage
-  private async initStorage() {
-    await this.storage.create();
-  }
-
-  // Načtení oblíbených jmen z paměti
-  private async loadFavorites() {
-    const favorites = await this.storage.get('favorites');
-    this.favoriteNames = favorites || [];
-  }
-
-  // Uložení oblíbených jmen do úložiště
-  private async saveFavorites() {
-    await this.storage.set('favorites', this.favoriteNames);
-  }
-
   // Přidání nebo odebrání jména z oblíbených
   toggleFavorite(name: string) {
-    if (!this.favoriteNames.includes(name)) {
-      this.favoriteNames.push(name);                                         // Přidáme jméno, pokud není v oblíbených
-    } else {
-      this.favoriteNames = this.favoriteNames.filter((fav) => fav !== name); // Odebereme jméno, pokud již v oblíbených je
-    }
-    this.saveFavorites();
+    this.favoriteService.toggleFavorite(name);                          // Použití služby pro přidání/odebrání oblíbených
+    this.favoriteNames = this.favoriteService.getFavoriteNames();       // Aktualizace seznamu oblíbených
   }
   
   // Kontrola, zda je jméno v oblíbených
