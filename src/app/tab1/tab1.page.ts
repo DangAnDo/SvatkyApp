@@ -3,6 +3,9 @@ import { SvatkyapiService } from '../services/svatkyapi.service'; // Import slu�
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
+import { Storage } from '@ionic/storage-angular'; // Import Ionic Storage
+
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
@@ -11,16 +14,19 @@ import { IonicModule } from '@ionic/angular';
   imports: [CommonModule, IonicModule],
 })
 export class Tab1Page {
-  nameday: string | null = null;
-  showRowView: boolean = false;    // Stav, zda zobrazovat řádkový kalendář
-  rowNamedays: any[] = [];         // Svátky pro zobrazení v řádkovém kalendáři
-  currentYear: number = new Date().getFullYear();  // Aktuální rok
+  nameday: string | null = null;                     // Svátek na zvolený den
+  showRowView: boolean = false;                      // Stav, zda zobrazovat řádkový kalendář
+  rowNamedays: any[] = [];                           // Svátky pro zobrazení v řádkovém kalendáři
+  currentYear: number = new Date().getFullYear();    // Aktuální rok
+  favoriteNames: string[] = [];                      // Pole oblíbených jmen
 
-  constructor(private namedayService: SvatkyapiService) {}
+  constructor(private namedayService: SvatkyapiService, private storage: Storage) {}
 
-  // Automaticky zobrazí dnešní svátky
-  ngOnInit() {
-    this.todayNameday();
+  // Asynchronní inicializace
+  async ngOnInit() {
+    this.todayNameday();      // Načtení svátku pro dnešní den
+    await this.initStorage(); // Inicializace perzistentní paměti (Ionic Storage)
+    this.loadFavorites();     // Načtení oblíbených jmen z paměti
   }
 
   // Načtění dnešních svátků
@@ -71,15 +77,45 @@ export class Tab1Page {
     }
   }
 
-    // Převod datumu z formátu YYYY-MM-DD na DD.MM.YYYY
-    private formatedDate(date: string): string {
-      const [year, month, day] = date.split('-');
-      return `${day}.${month}.${year}`;
-    }
+  // Převod datumu z formátu YYYY-MM-DD na DD.MM.YYYY
+  private formatedDate(date: string): string {
+    const [year, month, day] = date.split('-');
+    return `${day}.${month}.${year}`;
+  }
 
-    // Převod datumu z formátu DD.MM.YYYY na timestamp pro řazení (timestamp udává počet milisekund od 1.1.1970)
-    private parseDate(date: string): number {
-      const [day, month, year] = date.split('.');
-      return new Date(`${year}-${month}-${day}`).getTime();
+  // Převod datumu z formátu DD.MM.YYYY na timestamp pro řazení (timestamp udává počet milisekund od 1.1.1970)
+  private parseDate(date: string): number {
+    const [day, month, year] = date.split('.');
+    return new Date(`${year}-${month}-${day}`).getTime();
+  }
+
+  // Inicializace Ionic Storage
+  private async initStorage() {
+    await this.storage.create();
+  }
+
+  // Načtení oblíbených jmen z paměti
+  private async loadFavorites() {
+    this.favoriteNames = await this.storage.get('favoriteNames') || [];
+  }
+
+  // Uložení oblíbených jmen do úložiště
+  private async saveFavorites() {
+    await this.storage.set('favorites', this.favoriteNames);
+  }
+
+  // Přidání nebo odebrání jména z oblíbených
+  toggleFavorite(name: string) {
+    if (!this.favoriteNames.includes(name)) {
+      this.favoriteNames.push(name);                                         // Přidáme jméno, pokud není v oblíbených
+    } else {
+      this.favoriteNames = this.favoriteNames.filter((fav) => fav !== name); // Odebereme jméno, pokud již v oblíbených je
     }
+    this.saveFavorites();
+  }
+  
+  // Kontrola, zda je jméno v oblíbených
+  isFavorite(name: string): boolean {
+    return this.favoriteNames.includes(name);
+  }
 }

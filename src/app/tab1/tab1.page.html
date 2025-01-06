@@ -71,6 +71,12 @@
         <h3>{{ day.date }}</h3>
         <p>{{ day.name }}</p>
       </ion-label>
+      <ion-button fill="clear" (click)="toggleFavorite(day.name)">
+        <ion-icon
+          [name]="isFavorite(day.name) ? 'star' : 'star-outline'"
+          slot="icon-only"
+        ></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
 </div>
