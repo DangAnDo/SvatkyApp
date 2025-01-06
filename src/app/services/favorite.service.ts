@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage-angular';
 })
 
 export class FavoriteService {
-  private favoriteNamesSubject = new BehaviorSubject<string[]>([]);
+  private favoriteNamesSubject = new BehaviorSubject<{ name: string; date: string }[]>([]);
   favoriteNames$ = this.favoriteNamesSubject.asObservable();
 
   constructor(private storage: Storage) {}
@@ -20,19 +20,22 @@ export class FavoriteService {
   }
 
   // Načtení oblíbených jmen z paměti
-  getFavoriteNames(): string[] {
+  getFavoriteNames(): { name: string; date: string }[] {
     return this.favoriteNamesSubject.getValue();
   }
 
   // Přidání nebo odebrání jména z oblíbených
-  async toggleFavorite(name: string) {
+  async toggleFavorite(name: string, date: string) {
     const currentFavorites = this.getFavoriteNames();
-    let updatedFavorites: string[];
+    let updatedFavorites: { name: string; date: string }[];
 
-    if (currentFavorites.includes(name)) {
-      updatedFavorites = currentFavorites.filter((fav) => fav !== name);
+    const index = currentFavorites.findIndex((fav) => fav.name === name);
+    if (index > -1) {
+      // Odebrat, pokud už je v oblíbených
+      updatedFavorites = currentFavorites.filter((fav) => fav.name !== name);
     } else {
-      updatedFavorites = [...currentFavorites, name];
+      // Přidat nové jméno a datum
+      updatedFavorites = [...currentFavorites, { name, date }];
     }
 
     this.favoriteNamesSubject.next(updatedFavorites);

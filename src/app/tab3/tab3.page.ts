@@ -13,7 +13,7 @@ import { FavoriteService } from '../services/favorite.service';
 })
 
 export class Tab3Page {
-  favoriteNames: string[] = [];                  // Pole oblíbených jmen
+  favoriteNames: { name: string; date: string }[] = [];                  // Pole oblíbených jmen
 
   constructor(private favoriteService: FavoriteService) {}
 

@@ -13,14 +13,15 @@ import { FavoriteService } from '../services/favorite.service'; // Import služb
   standalone: true,
   imports: [CommonModule, IonicModule],
 })
-export class Tab1Page {
-  nameday: string | null = null;                     // Svátek na zvolený den
-  showRowView: boolean = false;                      // Stav, zda zobrazovat řádkový kalendář
-  rowNamedays: any[] = [];                           // Svátky pro zobrazení v řádkovém kalendáři
-  currentYear: number = new Date().getFullYear();    // Aktuální rok
-  favoriteNames: string[] = [];                      // Pole oblíbených jmen
 
-  constructor(private namedayService: SvatkyapiService, private favoriteService: FavoriteService ) {}
+export class Tab1Page {
+  nameday: string | null = null;                                // Svátek na zvolený den
+  showRowView: boolean = false;                                 // Stav, zda zobrazovat řádkový kalendář
+  rowNamedays: any[] = [];                                      // Svátky pro zobrazení v řádkovém kalendáři
+  currentYear: number = new Date().getFullYear();               // Aktuální rok
+  favoriteNames: { name: string; date: string }[] = [];         // Pole oblíbených jmen
+
+  constructor(private namedayService: SvatkyapiService, private favoriteService: FavoriteService) {}
 
   // Asynchronní inicializace
   async ngOnInit() {
@@ -86,13 +87,13 @@ export class Tab1Page {
   }
 
   // Přidání nebo odebrání jména z oblíbených
-  toggleFavorite(name: string) {
-    this.favoriteService.toggleFavorite(name);                          // Použití služby pro přidání/odebrání oblíbených
-    this.favoriteNames = this.favoriteService.getFavoriteNames();       // Aktualizace seznamu oblíbených
+  toggleFavorite(name: string, date: string) {
+    this.favoriteService.toggleFavorite(name, date);                  // Přidání nebo odebrání jména z oblíbených
+    this.favoriteNames = this.favoriteService.getFavoriteNames();     // Aktualizace seznamu oblíbených
   }
   
   // Kontrola, zda je jméno v oblíbených
   isFavorite(name: string): boolean {
-    return this.favoriteNames.includes(name);
+    return this.favoriteNames.some((fav) => fav.name === name);
   }
 }

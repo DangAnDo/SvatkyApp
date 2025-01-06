@@ -6,9 +6,10 @@
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let name of favoriteNames">
+    <ion-item *ngFor="let favorite of favoriteNames">
       <ion-label>
-        <h2>{{ name }}</h2>
+        <h2>{{ favorite.name }}</h2>
+        <p>{{ favorite.date }}</p>
       </ion-label>
     </ion-item>
   </ion-list>
