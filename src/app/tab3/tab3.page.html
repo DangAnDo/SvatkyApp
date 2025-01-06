@@ -7,7 +7,6 @@
 <ion-content>
   <!-- Dropdown menu pro výběr řazení -->
   <ion-item>
-    <ion-label>Seřadit podle:</ion-label>
     <ion-select [(ngModel)]="sortBy" (ionChange)="onSortChange($event)">
       <ion-select-option value="date-asc">Datum vzestupně</ion-select-option>
       <ion-select-option value="date-desc">Datum sestupně</ion-select-option>
