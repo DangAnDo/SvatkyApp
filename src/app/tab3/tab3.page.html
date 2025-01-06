@@ -5,6 +5,18 @@
 </ion-header>
 
 <ion-content>
+  <!-- Dropdown menu pro výběr řazení -->
+  <ion-item>
+    <ion-label>Seřadit podle:</ion-label>
+    <ion-select [(ngModel)]="sortBy" (ionChange)="onSortChange($event)">
+      <ion-select-option value="date-asc">Datum vzestupně</ion-select-option>
+      <ion-select-option value="date-desc">Datum sestupně</ion-select-option>
+      <ion-select-option value="name-asc">Jméno vzestupně</ion-select-option>
+      <ion-select-option value="name-desc">Jméno sestupně</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- Seznam oblíbených -->
   <ion-list>
     <ion-item *ngFor="let favorite of favoriteNames">
       <ion-label>
