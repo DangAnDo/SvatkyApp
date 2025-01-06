@@ -14,6 +14,7 @@ export class Tab1Page {
   nameday: string | null = null;
   showRowView: boolean = false;    // Stav, zda zobrazovat řádkový kalendář
   rowNamedays: any[] = [];         // Svátky pro zobrazení v řádkovém kalendáři
+  currentYear: number = new Date().getFullYear();  // Aktuální rok
 
   constructor(private namedayService: SvatkyapiService) {}
 
@@ -47,21 +48,18 @@ export class Tab1Page {
   toggleView() {
     this.showRowView = !this.showRowView;
     if (this.showRowView) {
-      this.loadLinearNamedays();
+      this.loadLinearNamedays(new Date().getMonth() + 1); // Načtení aktuálního měsíce
     }
   }
 
   // Načtení svátků pro řádkové zobrazení (např. celý měsíc)
-  loadLinearNamedays() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1; // Indexování od 0
-    const daysInMonth = new Date(year, month, 0).getDate();
+  loadLinearNamedays(month: number) {
+    const daysInMonth = new Date(this.currentYear, month, 0).getDate();
 
     // Pro všechny dny v měsíci voláme API
     this.rowNamedays = [];
     for (let day = 1; day <= daysInMonth; day++) {
-      const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;   // Formát YYYY-MM-DD
+      const date = `${this.currentYear}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`; // Formát YYYY-MM-DD
       this.namedayService.getNamedayForDate(date).subscribe(
         (data: any) => { this.rowNamedays.push({ date: this.formatedDate(date), name: data.name });   // Uložení do pole (push) CZ formát datum, jméno: API odpověď
 
@@ -69,7 +67,6 @@ export class Tab1Page {
         this.rowNamedays.sort((a, b) => {
           return this.parseDate(a.date) - this.parseDate(b.date);       // Vrátí a, pokud je výsledek záporný, jinak b
         });
-        
       });                    
     }
   }

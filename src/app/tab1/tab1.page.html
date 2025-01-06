@@ -34,14 +34,44 @@
   </div>
 
 <!-- Řádkový kalendář -->
-  <div *ngIf="showRowView">
-    <ion-list>
-      <ion-item *ngFor="let day of rowNamedays">
-        <ion-label>
-          <h3>{{ day.date }}</h3>
-          <p>{{ day.name }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
+<div *ngIf="showRowView">
+  <!-- Tlačítka pro výběr měsíce -->
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1" *ngFor="let month of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]">
+        <ion-button
+          expand="block"
+          (click)="loadLinearNamedays(month)"
+        >
+          {{
+            [
+              'Leden',
+              'Únor',
+              'Březen',
+              'Duben',
+              'Květen',
+              'Červen',
+              'Červenec',
+              'Srpen',
+              'Září',
+              'Říjen',
+              'Listopad',
+              'Prosinec',
+            ][month - 1]
+          }}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Seznam svátků -->
+  <ion-list>
+    <ion-item *ngFor="let day of rowNamedays">
+      <ion-label>
+        <h3>{{ day.date }}</h3>
+        <p>{{ day.name }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</div>
 </ion-content>
