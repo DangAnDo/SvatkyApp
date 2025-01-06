@@ -96,7 +96,8 @@ export class Tab1Page {
 
   // Načtení oblíbených jmen z paměti
   private async loadFavorites() {
-    this.favoriteNames = await this.storage.get('favoriteNames') || [];
+    const favorites = await this.storage.get('favorites');
+    this.favoriteNames = favorites || [];
   }
 
   // Uložení oblíbených jmen do úložiště
