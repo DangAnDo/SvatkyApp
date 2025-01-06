@@ -25,3 +25,5 @@ import { SvatkyapiService } from './services/svatkyapi.service'; // Import ručn
   bootstrap: [AppComponent],
 })
 export class AppModule {}
+
+// ionic capacitor run android -l --external
