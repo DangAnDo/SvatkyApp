@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="dark-theme">
   <ion-toolbar>
     <ion-title>Kalendář</ion-title>
     <ion-buttons slot="end">
@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="basic-calendar">
   <!-- Klasický kalendář -->
   <div *ngIf="!showRowView">
     <!-- `presentation="date"` určuje zobrazení kalendáře jako výběr datumu -->
