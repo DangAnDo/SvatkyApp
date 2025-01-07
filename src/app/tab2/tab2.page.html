@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="dark-theme">
   <ion-toolbar>
     <ion-title>Vyhledávání</ion-title>
   </ion-toolbar>
@@ -13,23 +13,28 @@
   <ion-button expand="full" (click)="searchByDate()">Vyhledat podle data</ion-button>
 
   <!-- Výsledek podle datumu -->
-  <ion-card *ngIf="resultDate">
-    <ion-card-header>
-      <ion-card-title>Svátek má:</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      {{ resultDate }}
-    </ion-card-content>
-  </ion-card>
+  <div class="result-container">
+    <ion-card *ngIf="resultDate">
+      <ion-card-header>
+        <ion-card-title>Svátek má:</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        {{ resultDate }}
+      </ion-card-content>
+    </ion-card>
+    <!-- Rezerva na výsledek i při absenci dat -->
+    <div *ngIf="!resultDate" class="placeholder"></div>
+  </div>
 
-    <!-- Vyhledávání podle jména -->
-    <ion-item>
-      <ion-label position="floating">Zadejte jméno</ion-label>
-      <ion-input [(ngModel)]="inputName"></ion-input>
-    </ion-item>
-    <ion-button expand="full" (click)="searchByName()">Vyhledat podle jména</ion-button>
-  
-    <!-- Výsledek podle jména -->
+  <!-- Vyhledávání podle jména -->
+  <ion-item>
+    <ion-label position="floating">Zadejte jméno</ion-label>
+    <ion-input [(ngModel)]="inputName"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="searchByName()">Vyhledat podle jména</ion-button>
+
+  <!-- Výsledek podle jména -->
+  <div class="result-container">
     <ion-card *ngIf="resultName">
       <ion-card-header>
         <ion-card-title>Svátek ve dne:</ion-card-title>
@@ -38,4 +43,7 @@
         {{ resultName }}
       </ion-card-content>
     </ion-card>
-  </ion-content>
+    <!-- Rezerva na výsledek i při absenci dat -->
+    <div *ngIf="!resultName" class="placeholder"></div>
+  </div>
+</ion-content>

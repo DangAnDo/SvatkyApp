@@ -1,0 +1,34 @@
+.dark-theme {
+    --ion-background-color: #000;
+    --ion-text-color: #ffffff;
+  }
+
+
+  .result-container {
+    min-height: 120px; /* Rezervovaný prostor pro výsledek */
+    display: flex;
+    align-items: center; /* Vertikální zarovnání obsahu */
+    justify-content: center; /* Horizontální zarovnání obsahu */
+  }
+  
+  .result-container ion-card {
+    width: 100%; /* Karta zabírá celou šířku kontejneru */
+  }
+  
+  .placeholder {
+    width: 100%;
+    height: 100%; /* Vyplní prostor, pokud není výsledek */
+  }
+  
+  ion-button {
+    --background: black; /* Černé pozadí */
+    --color: white; /* Bílý text */
+    --border-radius: 8px; /* Zakulacené rohy pro hezčí vzhled */
+  }
+
+  
+  
+  
+  
+
+  
