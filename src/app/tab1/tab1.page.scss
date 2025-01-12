@@ -1,54 +1,52 @@
 .dark-theme {
-    --ion-background-color: #000;
-    --ion-text-color: #ffffff;
-  }
+  --ion-background-color: #000;
+  --ion-text-color: #ffffff;
+}
 
 .basic-calendar {
-  --ion-background-color: #ffffff;
-  --ion-text-color: #000000;
+--ion-background-color: #ffffff;
+--ion-text-color: #000000;
 }
 
 ion-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-  
-  ion-datetime {
-    margin: 0 auto;
-  }
-  
-  ion-card {
-    margin-top: 20px;
-  }
-  
-  ion-card {
-    font-size: 1.5rem; /* Zvýšení velikosti textu */
-    padding: 10px; /* Zvýšení vnitřního odsazení */
-    text-align: center; /* Zarovnání textu na střed */
-  }
-  
-  ion-card-title {
-    font-size: 1.5rem; /* Zvýšení velikosti nadpisu */
-  }
-  
-  ion-card-content {
-    font-size: 2rem; /* Zvýšení velikosti obsahu */
-    font-weight: bold; /* Zvýraznění nadpisu */
-    color: black; /* Barva textu */
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
-  ion-button ion-icon[name="heart"] {
-    color: red; /* Červená barva pro ikony "heart" */
-  }
-  
-  ion-button ion-icon[name="heart-outline"] {
-    color: red; /* Červená barva pro ikony "heart-outline" */
-  }
-  
+ion-datetime {
+  margin: 0 auto;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+ion-card {
+  background-color: #ffffff; /* Bílé pozadí pro karty */
+  color: #000000; /* Černá barva textu */
+  margin-top: 20px;
+  font-size: 1.8rem; /* Zvýšení velikosti textu */
+  padding: 10px; /* Zvýšení vnitřního odsazení */
+  text-align: center; /* Zarovnání textu na střed */
+}
 
-  
-  
-  
+ion-card-title {
+  font-size: 1.5rem;
+}
+
+ion-card-content {
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+}
+
+ion-button ion-icon[name="heart"] {
+  color: red; /* Červená barva pro ikony "heart" */
+}
+
+ion-button ion-icon[name="heart-outline"] {
+  color: red; /* Červená barva pro ikony "heart-outline" */
+}
